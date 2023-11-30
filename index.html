@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blackjack - Vite App</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+
+    <div id="app">
+        <header class="titulo">
+          <h1 class="">Blackjack Game</h1>
+        </header>
+
+        <div class="row mt-2">
+            <div class=" divBotones col text-center"> 
+                <button 
+                    id="btnNuevo" 
+                    class="btn btn-danger m-4 fw-bold"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modal-id"
+                >
+                  New Game
+                </button>
+                <button id="btnBegin"  class="btn btn-secondary m-4 fw-bold">Let's play</button>
+                <button id="btnPedir" disabled="disabled" class="btn btn-primary m-4 fw-bold">Take cards</button>
+                <button id="btnDetener" disabled="disabled" class="btn btn-primary m-4 pe-4 ps-4 fw-bold">Stop</button>
+              </div>
+        </div>
+      
+        <div id='jug' class="container">  <!-- class="row mt-2 container" -->
+            <!-- <div  class="col bloques"> -->
+                <!-- <h1>Jugador - <small>0</small></h1> -->
+                <!-- <div id="jugador-cartas" class="cartasHTmL"></div> -->
+            <!-- </div> --> 
+        </div>
+
+        <!-- Modal -->
+        <div 
+          class="modal fade"  
+          tabindex="-1"
+          id="modal-id">
+          <div class="modal-dialog">
+            <div class="modal-content">
+        
+                <div class="modal-header">
+                    <h2 class="modal-title h2">Welcome to Blackjack</h2>
+                    <button class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+        
+                <div class="modal-body">
+                    <form class="players-num--form" id="form-players">
+                        <label for="players-num" class="players-num--label">How many players?</label>
+                        <input type="number" name="number-players" min="1" max="6" id="players-num" class="players-num--input" >
+                    </form>
+                </div>
+        
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-primary continue-button"     
+                            data-bs-dismiss="modal">
+                        Continue
+                    </button>
+                </div>
+        
+            </div>
+          </div>
+        </div>
+      
+    </div>
+
+    <script type="module" src="main.js"></script>
+    
+  </body>
+</html>

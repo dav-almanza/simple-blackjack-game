@@ -1,0 +1,120 @@
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+html, body {
+  margin: 0px;
+  background-color: rgb(69, 96, 72);
+  color: white;
+}
+.titulo {
+  padding: 2%;
+  text-align: center;
+  background-color: rgb(20, 17, 17) ;
+  color: white;
+  font-size: x-large;
+}
+.divBotones button {
+  letter-spacing: .75px;
+}
+
+.container {
+  max-width: 1200px;
+  display: flex;
+  flex-direction: row;   /* las clases del bootstrap row ya debe hacerlo (quiza sea innecesario) */
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.bloques {
+  width: 230px;
+  /* height: 500px; */
+  margin: 30px auto;
+  padding: 20px;
+  /* background-color: rgba(205, 209, 167, 0.193); */
+  display: flex;
+  flex-flow: column wrap;
+  /* justify-content: space-between; */
+}    
+
+.bloques div {
+  position: relative;
+  text-align: center;
+}
+.cartasHTML {
+  display: inline-block;
+  max-width: 100px;
+
+  position: relative;
+  top:20px;
+  /* left:25%; */
+  margin-bottom: -6em;
+}
+
+/* MODAL */
+.modal {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+.modal-dialog {
+   margin-top: 25vh;
+}
+.modal-content{
+  border-radius: 20px;
+}
+.modal-header h2 {
+  text-align: center;
+  color: black;
+} 
+.players-num--form {
+  width: 80%;
+  margin: .5em auto;
+  padding: 2em;
+
+  display: flex;
+  /* flex-flow: column nowrsap; */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.players-num--label {
+  display: inline-block;
+  padding-bottom: 0.5em;
+  font-size: 1.5em;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: rgba(0, 0, 0, 0.552);
+  outline: none;
+}
+.players-num--input {
+  display: inline-block;
+  width: 25%;
+  padding: 5px 0;
+
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 1.5em;
+  font-weight:bold;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.552);
+  
+  border: none;
+  border-radius: 7px;
+  box-shadow: 0px 8px 20px 5px rgba(49, 48, 48, 0.33);
+  outline: none;
+}
+.modal-footer {
+  text-align: center;
+}
+.continue-button {
+  width: 25%;
+  margin: 1em auto;
+  padding: .5em;
+  border-radius: 30px;
+
+  font-size: 1.2em;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  letter-spacing: 1.5px;
+
+}
