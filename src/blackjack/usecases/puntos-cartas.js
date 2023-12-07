@@ -18,10 +18,7 @@
     puntos[turno] = puntos[turno] + valorCarta(carta);
 
     // HTmL
-    smalls[turno].innerHTML = `
-      <h2> ${jugador[turno]} </h2>
-      <h3> ${puntos[turno]} </h3> 
-      `;
+    smalls[turno].innerHTML = `<h2> ${jugador[turno]}: <small> ${puntos[turno]} </small> </h2> `;
     const CartaHTmL     = document.createElement('img');
           CartaHTmL.src = `assets/cartas/${carta}.png`; 
           CartaHTmL.classList.add('cartasHTML');

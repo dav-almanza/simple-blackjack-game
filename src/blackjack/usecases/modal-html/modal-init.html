@@ -4,20 +4,19 @@
 
         <div class="modal-header">
             <h2 class="modal-title h2">Welcome to Blackjack</h2>
-            <button class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            <!-- <button class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button> -->
         </div>
 
         <div class="modal-body">
             <form class="players-num--form" id="form-players">
                 <label for="players-num" class="players-num--label">How many players?</label>
-                <input type="number" name="number-players" min="1" max="6" id="players-num" class="players-num--input" >
+                <input type="number" name="number-players" min="1" max="4" id="players-num" class="players-num--input" >
             </form>
+            <p class="text-center text-muted"><small>( 4 maximum )</small></p>
         </div>
 
         <div class="modal-footer">
-            <button type="button"
-                    class="btn btn-primary continue-button"     
-                    data-bs-dismiss="modal">
+            <button type="button" id="continue-button-players" class="btn btn-primary continue-button" disabled>
                 Continue
             </button>
         </div>

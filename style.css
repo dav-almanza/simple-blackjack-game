@@ -15,6 +15,7 @@ html, body {
   background-color: rgb(20, 17, 17) ;
   color: white;
   font-size: x-large;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .divBotones button {
   letter-spacing: .75px;
@@ -54,23 +55,42 @@ html, body {
 }
 
 /* MODAL */
-.modal {
+.modal-container {
+   position: fixed;
+   top: 0px;
+   left: 0px;
+   width: 100vw;
+   height: 100vh;
+   background-color: rgba(0, 0, 0, 0.5); 
+   
    display: flex;
    justify-content: center;
    align-items: center;
 }
-.modal-dialog {
-   margin-top: 25vh;
+
+.hidden-modal {
+  display: none;
 }
+
+.modal-dialog {
+   /* margin-top: 25vh; */
+   background-color: white;
+   border-radius: 10px;
+   padding: 3rem;
+   box-shadow: 0px 0px 50px 5px rgba(255, 255, 255, 0.5);
+}
+
 .modal-content{
   border-radius: 20px;
 }
+
 .modal-header h2 {
   text-align: center;
-  color: black;
+  color: rgba(0, 0, 0, 0.858);
 } 
+
 .players-num--form {
-  width: 80%;
+  width: 90%;
   margin: .5em auto;
   padding: 2em;
 
@@ -80,41 +100,56 @@ html, body {
   justify-content: center;
   align-items: center;
 }
+
 .players-num--label {
   display: inline-block;
-  padding-bottom: 0.5em;
-  font-size: 1.5em;
+  padding-bottom: 0.75em;
+  font-size: 1.25em;
   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   color: rgba(0, 0, 0, 0.552);
   outline: none;
 }
+
 .players-num--input {
   display: inline-block;
-  width: 25%;
-  padding: 5px 0;
+  width: 40%;
+  padding: 3px 0;
 
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  font-size: 1.5em;
+  font-family: Arial, Helvetica, sans-serif;
+  /* font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
+  font-size: 1.75em;
   font-weight:bold;
   text-align: center;
   color: rgba(0, 0, 0, 0.552);
   
   border: none;
   border-radius: 7px;
-  box-shadow: 0px 8px 20px 5px rgba(49, 48, 48, 0.33);
+  box-shadow: 0px 5px 25px 10px rgba(49, 48, 48, 0.33);
   outline: none;
 }
+
 .modal-footer {
   text-align: center;
 }
-.continue-button {
-  width: 25%;
+
+.continue-button{
+  width: 50%;
   margin: 1em auto;
   padding: .5em;
   border-radius: 30px;
-
+  
   font-size: 1.2em;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   letter-spacing: 1.5px;
+}
 
+.play-button{
+  width: 50%;
+  margin: 1em auto;
+  padding: .5em;
+  border-radius: 30px;
+  
+  font-size: 1.2em;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  letter-spacing: 1.5px;
 }
