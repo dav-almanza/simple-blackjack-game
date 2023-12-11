@@ -1,8 +1,10 @@
 import modalHtmlInit from './modal-init.html?raw';
 import modalHtmlNames from './modal-players.html?raw';
+import modalHtmlWinner from './modal-winner.html?raw';
 
 let modalinit,
     modalNames,
+    modalWinner,
     playersNames = [];
 
 export const hideModal = (modalElement) => {
@@ -14,7 +16,7 @@ export const showModal = (modalElement) => {
 }
 
 /**
- * Construir el modal
+ * Build the modal
  * @param {HTMLDivElement} elemHtml 
  * @returns {HTMLDivElement} 
  */
@@ -43,7 +45,12 @@ export const renderModalInit = ( elemHtml ) => {
     // }
     return modalinit;
 }
-
+/**
+ * Modal for Player's names
+ * @param {HTMLDivElement} elemHtml 
+ * @param {callback} initGame 
+ * @returns 
+ */
 export const renderModalPlayersName = ( elemHtml, initGame ) => {
 
     if(!elemHtml) 
@@ -63,7 +70,6 @@ export const renderModalPlayersName = ( elemHtml, initGame ) => {
                 playersNames = [];
                 for (const [key, value] of formData) {              
                     playersNames.push(value);
-                    console.log( {key, value});
                 }
                 hideModal( modalNames );
                 initGame( playersNames );
@@ -73,6 +79,25 @@ export const renderModalPlayersName = ( elemHtml, initGame ) => {
         elemHtml.append(modalNames);
     }
     return modalNames;
+}
+/**
+ * Modal to show who's the winner
+ * @param {HTMLDivElement} elemHtml 
+ * @returns 
+ */
+export const showModalWinner = ( elemHtml) => {
+
+    if(!elemHtml) 
+        throw new Error('Html Element is required for rendering ModalInit');
+    if(!modalWinner){
+        modalWinner = document.createElement('div');
+            modalWinner.innerHTML = modalHtmlWinner;
+            modalWinner.classList.add('modal-container','hidden-modal');  // modal-container
+            modalWinner.setAttribute('id','modal-winner-id');
+
+        elemHtml.append(modalWinner);
+    }
+    return modalWinner;
 }
 
 // export default renderModalInit;

@@ -1,6 +1,6 @@
 import _ from 'underscore'; 
 import { crearDeck, puntosYcartasHTmL, turnoComputadora, quienGana } from "./usecases"; 
-import { hideModal, renderModalInit, renderModalPlayersName, showModal } from './usecases/modal-html/showModal';
+import { hideModal, renderModalInit, renderModalPlayersName, showModal, showModalWinner } from './usecases/modal-html/showModal';
 
 const ModuloBlackJack = ( () => {
   'use strict' 
@@ -12,13 +12,16 @@ const ModuloBlackJack = ( () => {
           btnDetener      = document.querySelector('#btnDetener'),  // botones
           divContainer    = document.querySelector('#jug'),
           divApp          = document.querySelector('#app');
-    let   deck, turno,
+
+    let   deck, turno, numJug,
           jugadores       = [],
           puntosJugadores = [],
           smalls          = [], 
           divCartasImg    = []; 
+
     let   modalinit, 
-          modalNames;
+          modalNames,
+          modalWinner;
     
     /** -------------------------------------------------------------------------------
      *                INFO: InicializarJuego()
@@ -32,33 +35,11 @@ const ModuloBlackJack = ( () => {
         turno = 0;
         jugadores       = [...playersNames, 'computer'],
         puntosJugadores = [];
-        console.log(jugadores);
 
         while ( divContainer.children.length >= 1 ) {
             divContainer.lastElementChild.remove();
         }
-        // for (let i = 0; i < numJugadores; i++) {
-        //     if ( i < numJugadores-1 ) {
-        //         jugadores.push( prompt(`nombre de jugador ${i+1}`) ); // definiendo nombres de jugadores
-        //     } else {
-        //         jugadores.push( 'computadora' );
-        //     }         
-        //     puntosJugadores.push(0);  // inicializando puntajes
-
-        //     // creando estructura de elementos HTML: espacio de juego de cada jugador
-        //     const divCartas = document.createElement('div');
-        //           divCartas.classList.add('bloques');
-
-        //     smalls[i]       = document.createElement('div');
-        //     divCartasImg[i] = document.createElement('div');
-        //     smalls[i].innerHTML = `
-        //       <h2> ${jugadores[i]} </h2>
-        //       <h3> ${0} </h3>
-        //       ` ; 
-            
-        //     divCartas.append( smalls[i], divCartasImg[i]);
-        //     divContainer.append( divCartas );
-        //   }
+      
         for (const playerIndx in jugadores) {
             puntosJugadores.push(0);  // inicializando puntajes
             
@@ -66,15 +47,25 @@ const ModuloBlackJack = ( () => {
             const divCartas = document.createElement('div');
                   divCartas.classList.add('bloques');
 
-            smalls[playerIndx]       = document.createElement('div');
-            divCartasImg[playerIndx] = document.createElement('div');
-            smalls[playerIndx].innerHTML = `<h2> ${jugadores[playerIndx]}: <small> ${0} </small> </h2> ` ; 
+            smalls[playerIndx] = document.createElement('div');
+            smalls[playerIndx].innerHTML = `
+                <p class="active-player">It's your turn!</p>
+                <h2> ${jugadores[playerIndx]}</h2> 
+                <small> ${0} </small> 
+                ` ; 
             
-            divCartas.append( smalls[playerIndx], divCartasImg[playerIndx]);
+            divCartasImg[playerIndx] = document.createElement('div');
+            
+            divCartas.append( smalls[playerIndx], divCartasImg[playerIndx] );
             divContainer.append( divCartas );
+
+            if ( playerIndx == 0 ) {
+                smalls[playerIndx].querySelector('.active-player').style.opacity = 1;  // mark the first player's turn
+            }
           }
         btnPedirCarta.disabled = false;  
         btnDetener.disabled    = false;
+        btnNuevoJuego.disabled = true;
     }
     /** --------------------------------------------------------------------------------
      *                INFO: NextPlayerGame()
@@ -86,18 +77,26 @@ const ModuloBlackJack = ( () => {
      */
     const nextPlayerGame = (turno, jugadores) => { 
 
-        // turno++   => por que no funciona incrementar el turno en esta funcion????
-        if( turno !== jugadores.length - 1 ) {
-            alert( `Turno de ${jugadores[turno]}` ); 
-
-            //TODO: otra via: activar clase para resaltar turno de jugador
-            // la idea seria: recorrer y quitarselas a todos y luego solo agregar la "clase" al turno actual
+        if( jugadores[turno] !== 'computer') {
+           smalls.forEach( playerDiv => playerDiv.querySelector('.active-player').style.opacity = 0 );
+        //    smalls.forEach( playerDiv => playerDiv.querySelector('h2').classList.remove('active-player2'));
+           showNextTurn( turno );
         } else {
-            btnPedirCarta.disabled = true;
-            btnDetener.disabled = true;
-            turnoComputadora( deck, jugadores, puntosJugadores, smalls, divCartasImg  );
-            mostrarGanador();
+           smalls.forEach( playerDiv => playerDiv.querySelector('.active-player').style.opacity = 0 );
+        //    smalls.forEach( playerDiv => playerDiv.querySelector('h2').classList.remove('active-player2'));
+           showNextTurn( turno );
+           turnoComputadora( deck, puntosJugadores, smalls, divCartasImg  );
+           mostrarGanador();
+
+           btnPedirCarta.disabled = true;
+           btnDetener.disabled = true;
         } 
+    }
+
+    const showNextTurn = ( turn ) => {
+        smalls[turn].querySelector('.active-player').textContent = `${jugadores[turn]}'s turn`;
+        smalls[turn].querySelector('.active-player').style.opacity = 1;
+        // smalls[turn].querySelector('h2').classList.add('active-player2');
     }
     /** ---------------------------------------------------------------------------------
      *                INFO: mostrarGanador()
@@ -107,86 +106,88 @@ const ModuloBlackJack = ( () => {
         const ganadores = quienGana( jugadores, puntosJugadores );
 
         let winnerMsg = '';
-        ( ganadores.length > 1 ) ? winnerMsg = 'EMPATAN '
-                                 : winnerMsg = 'GANA!';
+        ( ganadores.length > 1 ) ? winnerMsg = 'Draw ' : winnerMsg = 'Winner!';
+                                 
         setTimeout(() => {
-          alert(` ${ganadores.join(' & ')}  ${winnerMsg} `);  // showModal
-        }, 250);
+            modalWinner.querySelector('h2').innerHTML = ` ${winnerMsg} `;
+            modalWinner.querySelector('#player-winner').textContent = ` ${ganadores.join(' & ')} `;
+            showModal( modalWinner );
+        }, 1000);        
     }
 
 
-    /**---------------------------------------------------------------------------------
+    /**-----------------------------------------------------------------------------
      *                EVENTOS del Juego BlackJack   
     */ 
-    btnPedirCarta.addEventListener('click', () => {    // evento PEDIR CARTA
-
-      const puntosJug = puntosYcartasHTmL( deck, turno, jugadores, puntosJugadores, smalls, divCartasImg);   
+    btnPedirCarta.addEventListener('click', () => {    // PEDIR CARTA
+      const puntosJug = puntosYcartasHTmL( deck, turno, puntosJugadores, smalls, divCartasImg);   
       if( puntosJug >= 21 ) {
           turno++;
           nextPlayerGame( turno, jugadores );
       }
     })
-
-    // ---------------------------------------------------------------------------------
-    btnDetener.addEventListener('click', () => {   // evento DETENER
+    // DETENER ---------------------------------------------------------------------
+    btnDetener.addEventListener('click', () => {   
       turno++;
       nextPlayerGame( turno, jugadores);
     })
-
-   //-----------------------------------------------------------------------------------
-    btnNuevoJuego.addEventListener('click', () => {  // evento NUEVO JUEGO
-        let numJug;
-
+   // NUEVO JUEGO-------------------------------------------------------------------
+    btnNuevoJuego.addEventListener('click', () => {  
+        // configGameModals( modalinit, modalNames, modalWinner );
         if (!modalinit) {
-          modalinit  = renderModalInit( divApp );
-
-          const formInputPlayersNum = modalinit.querySelector('#players-num');  // input: players num
-          const continueBtn         = modalinit.querySelector('#continue-button-players');  // continue button
-          
-          formInputPlayersNum.addEventListener( 'input', (ev) => {
-              numJug = +ev.target.value;
-              continueBtn.disabled = (numJug > 4 || numJug < 1 || isNaN(numJug)) ? true : false;
-              
-          })
-
-          if (!modalNames) {
-              modalNames = renderModalPlayersName( divApp, InicializarJuego );
-              const formPlayerNames = modalNames.querySelector('#players-name');  // form: players's name
-              const formLetsPlayBtn = modalNames.querySelector('.play-button');  // form: Let's play button
-              
-              let inputsPlayersNames = document.createElement('div');
-                  // inputsPlayersNames.classList.add('');
-
-              // event after press button continue (new Game)
-              continueBtn.addEventListener( 'click', () => {
-                  hideModal( modalinit );
-                  inputsPlayersNames.innerHTML = '';
-                  for (let i = 1; i <= numJug; i++) {
+            modalinit  = renderModalInit( divApp );
+    
+            const formInputPlayersNum = modalinit.querySelector('#players-num');  // input: players num
+            const btnContinue         = modalinit.querySelector('#continue-button-players');  // continue button
+            formInputPlayersNum.addEventListener( 'input', (ev) => {
+                numJug = +ev.target.value;
+                btnContinue.disabled = (numJug > 4 || numJug < 1 || isNaN(numJug)) ? true : false;
+            });
+            
+            if (!modalNames) {
+                modalNames = renderModalPlayersName( divApp, InicializarJuego );
+    
+                const formPlayerNames = modalNames.querySelector('#players-name');  // form: players's name
+                const formLetsPlayBtn = modalNames.querySelector('.play-button');  // form: Let's play button
+                let inputsPlayersNames = document.createElement('div');  // inputsPlayersNames.classList.add('');
+                // event after press button continue (new Game)
+                btnContinue.addEventListener( 'click', () => {
+                    hideModal( modalinit );
+                    inputsPlayersNames.innerHTML = '';
+                    for (let i = 1; i <= numJug; i++) {
                     inputsPlayersNames.innerHTML += `
                         <br/>
                         <input type="text" placeholder="player's name ${i}" name="players" id="player-name-${i}" class="players-name--input form-control" >
                     `;
+                    }
+                    formPlayerNames.insertBefore( inputsPlayersNames, formLetsPlayBtn );
+                    showModal( modalNames );          
+                });
+            } 
+          }
+    
+          if (!modalWinner) {
+              modalWinner = showModalWinner( divApp );
+    
+              const btnRepeatGame = modalWinner.querySelector('#repeat-game-button');
+              const btnCloseGame  = modalWinner.querySelector('.btn-winner-close');
+              btnRepeatGame.addEventListener( 'click', () => {
+                  const players = jugadores.filter(jugador => jugador !== 'computer');
+                  hideModal( modalWinner );
+                  InicializarJuego( players );
+              })
+              btnCloseGame.addEventListener( 'click', () => {
+                  while ( divContainer.children.length >= 1 ) {
+                      divContainer.lastElementChild.remove();
                   }
-                  formPlayerNames.insertBefore( inputsPlayersNames, formLetsPlayBtn );
-                  showModal( modalNames );     
-                  //TODO: Falta inicializar el juego          
+                  hideModal( modalWinner );
+                  btnNuevoJuego.disabled = false;
               });
-          } 
-        }
-        showModal(modalinit);
-      
-        // const modalNames = render
-        // do {9
-        //   numJug = parseInt( prompt('¿Cantidad de Jugadores? ( >=2 )') ); // SHOWMODAL
-        // } while ( !numJug || numJug < 2 );
-        // InicializarJuego();  
+          }
+        showModal(modalinit);   
     })
-   //-----------------------------------------------------------------------------------
-
-   
-
   return { nuevoJuego: InicializarJuego };  
-} ) ()
+})()
 
 
 
